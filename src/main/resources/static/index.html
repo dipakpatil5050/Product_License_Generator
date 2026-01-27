@@ -430,6 +430,8 @@
 <div id="toast" class="toast"></div>
 
 <script>
+
+    const APIUrl = "http://localhost:8080/api/license"
     // --- 1. Tab Switching Logic ---
     function switchTab(tabName) {
         // Update Sidebar
@@ -485,7 +487,7 @@
         };
 
         try {
-            const response = await fetch("http://localhost:8080/api/license/generate", {
+            const response = await fetch(APIUrl+"/generate", {
                 method: 'POST',
                 headers: { 'Authorization': AUTH_HEADER, 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
@@ -508,13 +510,12 @@
         }
     });
 
-    // --- 3. Table Data Fetching ---
     async function fetchRecords() {
         const tbody = document.getElementById('tableBody');
         tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 2rem;"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</td></tr>';
 
         try {
-            const response = await fetch("http://localhost:8080/api/license/records", {
+            const response = await fetch(APIUrl+"/records", {
                 method: 'GET',
                 headers: { 'Authorization': AUTH_HEADER }
             });
