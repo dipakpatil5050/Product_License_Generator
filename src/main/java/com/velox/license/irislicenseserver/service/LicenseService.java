@@ -4,11 +4,14 @@ import com.velox.license.irislicenseserver.DTO.LicenceResponse;
 import com.velox.license.irislicenseserver.model.License;
 import com.velox.license.irislicenseserver.repository.LicenseRepository;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 import tools.jackson.databind.ObjectMapper;
 
 import java.time.LocalDate;
 import java.util.Base64;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +25,6 @@ public class LicenseService {
     public byte[] generateLicense(License entity) throws Exception{
 
         entity.setIssueDate(LocalDate.now());
-        repo.save(entity);
 
         LicenceResponse payload = new LicenceResponse();
         payload.setProduct(entity.getProductName());
@@ -34,15 +36,19 @@ public class LicenseService {
         payload.setIrisEnabled(entity.isIrisEnabled());
 
         byte[] payloadBytes = mapper.writeValueAsBytes(payload);
-
-
         byte[] signature = signer.sign(payloadBytes);
 
+        repo.save(entity);
         return Base64.getEncoder().encode(
                 (new String(payloadBytes) +
                         "\n--SIGN--\n" +
                         Base64.getEncoder().encodeToString(signature))
                         .getBytes()
         );
+    }
+
+    public List<License> getAllLicenseRecords() {
+        List<License> allLicenses = repo.findAll();
+        return allLicenses;
     }
 }
