@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Velox | License Generator</title>
+    <title>Velox | License Manager</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -11,480 +11,465 @@
         :root {
             --primary: #0D355C;
             --primary-light: #1a4b7c;
-            --accent: #3b82f6;
+            --accent: #ef4444;
             --success: #10b981;
             --danger: #ef4444;
+            --warning: #f59e0b;
             --bg-body: #f1f5f9;
             --text-main: #1e293b;
             --text-light: #64748b;
             --border: #e2e8f0;
             --white: #ffffff;
-            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.05);
+            --sidebar-width: 260px;
         }
 
         * { box-sizing: border-box; }
 
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
+            background-color: var(--bg-body);
             color: var(--text-main);
-        }
-
-        /* Main Card Container */
-        .main-card {
+            margin: 0;
             display: flex;
-            background: var(--white);
-            width: 1000px;
-            max-width: 100%;
-            border-radius: 20px;
+            height: 100vh;
             overflow: hidden;
-            box-shadow: var(--shadow-lg);
-            min-height: 650px;
         }
 
-        /* Left Side - Branding */
-        .brand-panel {
-            background: var(--primary);
-            width: 35%;
-            padding: 3rem 2rem;
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--primary);
             color: white;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-            overflow: hidden;
+            padding: 1.5rem;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+            z-index: 10;
         }
 
-        /* Abstract circles background */
-        .brand-panel::before {
-            content: '';
-            position: absolute;
-            top: -50px;
-            left: -50px;
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.05);
-        }
-        .brand-panel::after {
-            content: '';
-            position: absolute;
-            bottom: -50px;
-            right: -50px;
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.05);
+        /* Sidebar Brand Section */
+        .brand {
+            display: flex;
+            align-items: center;     /* Vertically centers icon and image */
+            gap: 12px;               /* Space between the shield icon and the text logo */
+            margin-bottom: 3rem;
+            padding: 0 0.5rem;       /* Slight padding for alignment */
         }
 
-        .brand-content h1 {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-            font-weight: 700;
-        }
-        .brand-content p {
-            color: rgba(255,255,255,0.7);
-            font-size: 0.95rem;
-            line-height: 1.5;
+        /* The Shield Icon */
+        .brand i {
+            font-size: 1.8rem;       /* Size of the shield icon */
+            color: var(--accent);
+            flex-shrink: 0;          /* Prevents icon from squishing */
         }
 
-        .brand-footer {
-            font-size: 0.85rem;
-            color: rgba(255,255,255,0.5);
-            z-index: 1;
+        /* The Logo Image */
+        .brand-logo {
+            height: 45px;            /* Fix the height to fit sidebar */
+            width: auto;             /* Let width calculate automatically */
+            max-width: 160px;        /* Ensure it never overflows the sidebar */
+            object-fit: contain;     /* Keeps the logo aspect ratio perfect */
+            display: block;
         }
-
-        /* Right Side - Form */
-        .form-panel {
-            width: 65%;
-            padding: 3rem;
-            overflow-y: auto;
-            background-color: #fff;
-        }
-
-        .panel-header {
-            margin-bottom: 2rem;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 1rem;
-        }
-
-        .panel-header h2 {
+        .nav-menu {
+            list-style: none;
+            padding: 0;
             margin: 0;
-            color: var(--primary);
-            font-size: 1.5rem;
+            flex-grow: 1;
         }
 
-        /* Grid Layout */
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
+        .nav-item {
+            margin-bottom: 0.5rem;
         }
 
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0.85rem 1rem;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        .nav-link.active {
+            background-color: var(--accent);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .nav-footer {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.4);
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex-grow: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .view-section {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .view-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h2 { margin: 0; color: var(--primary); font-size: 1.75rem; }
+
+        /* Card Styles */
+        .card {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            border: 1px solid var(--border);
+        }
+
+        /* --- Table Styles --- */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background-color: #f8fafc;
+            color: var(--text-light);
+            font-weight: 600;
+            text-align: left;
+            padding: 1rem;
+            border-bottom: 2px solid var(--border);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+
+        tr:hover { background-color: #f8fafc; }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-success { background-color: #dcfce7; color: #166534; }
+        .badge-danger { background-color: #fee2e2; color: #991b1b; }
+        .badge-info { background-color: #dbeafe; color: #1e40af; }
+        .badge-neutral { background-color: #f1f5f9; color: #64748b; }
+
+        .btn-refresh {
+            background: white;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-refresh:hover { border-color: var(--primary); color: var(--primary); }
+
+        /* --- Form Styles (Imported from prev) --- */
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
         .col-full { grid-column: span 2; }
 
-        /* Inputs */
-        .input-group {
-            position: relative;
-            margin-bottom: 0.5rem;
-        }
-
-        .input-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--text-main);
-        }
-
-        .input-wrapper {
-            position: relative;
-        }
-
-        .input-wrapper i {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-light);
-            font-size: 0.9rem;
-        }
+        .input-group label { display: block; margin-bottom: 0.5rem; font-size: 0.85rem; font-weight: 600; }
+        .input-wrapper { position: relative; }
+        .input-wrapper i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-light); }
 
         .form-control {
-            width: 100%;
-            padding: 0.75rem 1rem 0.75rem 2.5rem; /* Space for icon */
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.95rem;
-            color: var(--text-main);
-            transition: all 0.2s ease;
-            background: #fafafa;
+            width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem;
+            background: #fafafa; transition: all 0.2s;
         }
+        .form-control:focus { outline: none; border-color: var(--accent); background: white; }
+        textarea.form-control { padding-left: 1rem; min-height: 80px; resize: vertical; }
 
-        .form-control:focus {
-            outline: none;
-            border-color: var(--accent);
-            background: white;
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
-        }
-
-        textarea.form-control {
-            padding-left: 1rem; /* No icon for textarea usually */
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        /* Custom Toggle Switch */
-        .toggle-container {
-            display: flex;
-            gap: 2rem;
-            margin-top: 1rem;
-            padding: 1.5rem;
-            background: #f8fafc;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-        }
-
-        .toggle-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-        }
-
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 44px;
-            height: 24px;
-        }
-
+        .toggle-container { display: flex; gap: 2rem; margin-top: 1rem; padding: 1.5rem; background: #f8fafc; border-radius: 12px; border: 1px solid var(--border); }
+        .toggle-item { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
         .switch input { opacity: 0; width: 0; height: 0; }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #cbd5e1;
-            transition: .4s;
-            border-radius: 34px;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 18px;
-            width: 18px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-
-        /* Iris Color */
-        .iris-toggle input:checked + .slider { background-color: var(--success); }
-        /* Revoked Color */
-        .revoked-toggle input:checked + .slider { background-color: var(--danger); }
-
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--success); }
+        #revoked:checked + .slider { background-color: var(--danger); }
         input:checked + .slider:before { transform: translateX(20px); }
 
-        .toggle-label { font-size: 0.9rem; font-weight: 500; }
-
-        /* Button */
         .btn-submit {
-            background: linear-gradient(to right, var(--primary), var(--primary-light));
-            color: white;
-            border: none;
-            padding: 1rem;
-            font-size: 1rem;
-            font-weight: 600;
-            border-radius: 8px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 2rem;
-            transition: transform 0.1s, box-shadow 0.2s;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
+            background: var(--primary); color: white; border: none; padding: 1rem;
+            font-size: 1rem; font-weight: 600; border-radius: 8px; cursor: pointer;
+            width: 100%; margin-top: 2rem; display: flex; justify-content: center; gap: 10px;
         }
+        .btn-submit:hover { background: var(--primary-light); }
 
-        .btn-submit:hover {
-            box-shadow: 0 4px 12px rgba(13, 53, 92, 0.3);
-            transform: translateY(-1px);
-        }
-
-        .btn-submit:active { transform: translateY(0); }
-
-        .btn-submit:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
-
-        /* Loading Spinner */
-        .spinner {
-            display: none;
-            width: 18px;
-            height: 18px;
-            border: 2px solid #ffffff;
-            border-radius: 50%;
-            border-top-color: transparent;
-            animation: spin 0.8s linear infinite;
-        }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-
-        /* Toast Notification */
+        /* Toast */
         .toast {
-            visibility: hidden;
-            min-width: 300px;
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            border-radius: 8px;
-            padding: 16px;
-            position: fixed;
-            z-index: 10;
-            right: 30px;
-            bottom: 30px;
-            font-size: 14px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.3s;
+            visibility: hidden; min-width: 300px; background-color: #333; color: #fff;
+            text-align: center; border-radius: 8px; padding: 16px; position: fixed;
+            z-index: 20; right: 30px; bottom: 30px; opacity: 0; transform: translateY(20px); transition: all 0.3s;
         }
-
-        .toast.show {
-            visibility: visible;
-            opacity: 1;
-            transform: translateY(0);
-        }
-
+        .toast.show { visibility: visible; opacity: 1; transform: translateY(0); }
         .toast.success { background-color: var(--success); }
         .toast.error { background-color: var(--danger); }
 
-        /* Responsive */
-        @media (max-width: 850px) {
-            .main-card { flex-direction: column; height: auto; }
-            .brand-panel { width: 100%; padding: 2rem; text-align: center; }
-            .brand-panel::before { left: 50%; transform: translateX(-50%); }
-            .form-panel { width: 100%; }
-        }
+        /* Loading Spinner */
+        .spinner { display: none; width: 18px; height: 18px; border: 2px solid #fff; border-radius: 50%; border-top-color: transparent; animation: spin 0.8s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        @media (max-width: 600px) {
+        @media (max-width: 900px) {
+            body { flex-direction: column; height: auto; overflow: visible; }
+            .sidebar { width: 100%; flex-direction: row; align-items: center; padding: 1rem; }
+            .brand { margin-bottom: 0; margin-right: 2rem; }
+            .nav-menu { display: flex; gap: 1rem; }
+            .nav-footer { display: none; }
             .form-grid { grid-template-columns: 1fr; }
             .col-full { grid-column: span 1; }
-            .toggle-container { flex-direction: column; gap: 1rem; }
         }
     </style>
 </head>
 <body>
 
-<div class="main-card">
-    <div class="brand-panel">
-        <div class="brand-content">
-            <div style="margin-bottom: 2rem;">
-                <i class="fa-solid fa-shield-halved" style="font-size: 3rem; color: #60a5fa;"></i>
-            </div>
-            <h1>Velox Automation</h1>
-            <p>Product License Management System.</p>
-            <p style="margin-top: 1rem; font-size: 0.85rem; opacity: 0.8;">Generate cryptographic keys and manage client entitlements license.</p>
-        </div>
-        <div id="currentYear" class="brand-footer">
-            &copy;  Velox Automation Pvt Ltd
-        </div>
+<aside class="sidebar">
+    <div class="brand">
+        <img src="./assets/veloxLogoDark.png"
+             alt="Velox Automation"
+             class="brand-logo"
+             onerror="this.style.display='none'; document.getElementById('backup-text').style.display='block';"
+        />
+
+        <span id="backup-text" style="display:none; font-size: 1.2rem; font-weight: bold; margin-left: 5px;">
+        Velox Automation
+    </span>
     </div>
+    <ul class="nav-menu">
+        <li class="nav-item">
+            <a class="nav-link active" onclick="switchTab('create')">
+                <i class="fa-solid fa-plus-circle"></i> Create License
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" onclick="switchTab('records')">
+                <i class="fa-solid fa-list-ul"></i> All Records
+            </a>
+        </li>
+    </ul>
+    <div class="nav-footer">
+        &copy; Velox Automation Pvt Ltd.
+    </div>
+</aside>
 
-    <div class="form-panel">
-        <div class="panel-header">
-            <h2>Create New License</h2>
+<main class="main-content">
+
+    <section id="create-section" class="view-section active">
+        <div class="page-header">
+            <h2>New License Generation</h2>
         </div>
+        <div class="card">
+            <form id="licenseForm">
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>Product Name</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-box"></i>
+                            <input type="text" id="productName" class="form-control" value="IrisAuth Desktop" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>License Type</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-file-contract"></i>
+                            <input type="text" id="licenseName" class="form-control" value="Standard Commercial" required>
+                        </div>
+                    </div>
+                    <div class="input-group col-full">
+                        <label>Customer Name</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-building"></i>
+                            <input type="text" id="customerName" class="form-control" placeholder="e.g. Acme Industries Ltd." required>
+                        </div>
+                    </div>
+                    <div class="input-group col-full">
+                        <label>Description</label>
+                        <textarea id="description" class="form-control" placeholder="Internal notes..."></textarea>
+                    </div>
+                    <div class="input-group col-full">
+                        <label>Hardware ID</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-fingerprint"></i>
+                            <input type="text" id="hwId" class="form-control" placeholder="d7fdd8be..." style="font-family: monospace;">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Issue Date</label>
+                        <div class="input-wrapper">
+                            <i class="fa-regular fa-calendar"></i>
+                            <input type="date" id="issueDate" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Expiry Date</label>
+                        <div class="input-wrapper">
+                            <i class="fa-regular fa-calendar-xmark"></i>
+                            <input type="date" id="expiryDate" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Max Seats</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-users"></i>
+                            <input type="number" id="maxUsers" class="form-control" value="10" min="1">
+                        </div>
+                    </div>
 
-        <form id="licenseForm">
-            <div class="form-grid">
-
-                <div class="input-group">
-                    <label for="productName">Product Name</label>
-                    <div class="input-wrapper">
-                        <i class="fa-solid fa-box"></i>
-                        <input type="text" id="productName" class="form-control" value="IrisAuth Desktop" required>
+                    <div class="col-full toggle-container">
+                        <div class="toggle-item">
+                            <label class="switch">
+                                <input type="checkbox" id="irisEnabled" checked>
+                                <span class="slider"></span>
+                            </label>
+                            <span>Iris Enabled</span>
+                        </div>
+                        <div class="toggle-item">
+                            <label class="switch">
+                                <input type="checkbox" id="revoked">
+                                <span class="slider"></span>
+                            </label>
+                            <span>Revoked</span>
+                        </div>
                     </div>
                 </div>
 
-                <div class="input-group">
-                    <label for="licenseName">License Type</label>
-                    <div class="input-wrapper">
-                        <i class="fa-solid fa-file-contract"></i>
-                        <input type="text" id="licenseName" class="form-control" value="Standard Commercial" required>
-                    </div>
-                </div>
+                <button type="submit" class="btn-submit" id="submitBtn">
+                    <span class="spinner" id="btnSpinner"></span>
+                    <span id="btnText">Generate License</span>
+                </button>
+            </form>
+        </div>
+    </section>
 
-                <div class="input-group col-full">
-                    <label for="customerName">Customer / Client Name</label>
-                    <div class="input-wrapper">
-                        <i class="fa-solid fa-building"></i>
-                        <input type="text" id="customerName" class="form-control" placeholder="e.g. Acme Industries Ltd." required>
-                    </div>
-                </div>
-
-                <div class="input-group col-full">
-                    <label for="description">Notes / Description</label>
-                    <textarea id="description" class="form-control" placeholder="Internal reference notes..."></textarea>
-                </div>
-
-                <div class="input-group col-full">
-                    <label for="hwId">Hardware Fingerprint (HWID)</label>
-                    <div class="input-wrapper">
-                        <i class="fa-solid fa-fingerprint"></i>
-                        <input type="text" id="hwId" class="form-control" placeholder="e.g. d7fdd8be-xxxx-xxxx" style="font-family: monospace;">
-                    </div>
-                </div>
-
-                <div class="input-group">
-                    <label for="issueDate">Issue Date</label>
-                    <div class="input-wrapper">
-                        <i class="fa-regular fa-calendar"></i>
-                        <input type="date" id="issueDate" class="form-control" required>
-                    </div>
-                </div>
-
-                <div class="input-group">
-                    <label for="expiryDate">Expiry Date</label>
-                    <div class="input-wrapper">
-                        <i class="fa-regular fa-calendar-xmark"></i>
-                        <input type="date" id="expiryDate" class="form-control" required>
-                    </div>
-                </div>
-
-                <div class="input-group">
-                    <label for="maxUsers">Max Users</label>
-                    <div class="input-wrapper">
-                        <i class="fa-solid fa-users"></i>
-                        <input type="number" id="maxUsers" class="form-control" value="10" min="1">
-                    </div>
-                </div>
-
-                <div class="col-full toggle-container">
-
-                    <div class="toggle-item iris-toggle">
-                        <label class="switch">
-                            <input type="checkbox" id="irisEnabled" checked>
-                            <span class="slider"></span>
-                        </label>
-                        <span class="toggle-label">Iris Protection Enabled</span>
-                    </div>
-
-                    <div class="toggle-item revoked-toggle">
-                        <label class="switch">
-                            <input type="checkbox" id="revoked">
-                            <span class="slider"></span>
-                        </label>
-                        <span class="toggle-label">Revoke License</span>
-                    </div>
-
-                </div>
-
-            </div>
-
-            <button type="submit" class="btn-submit" id="submitBtn">
-                <span class="spinner" id="btnSpinner"></span>
-                <span id="btnText">Generate License File</span>
-                <i class="fa-solid fa-arrow-right"></i>
+    <section id="records-section" class="view-section">
+        <div class="page-header">
+            <h2>License Database</h2>
+            <button class="btn-refresh" onclick="fetchRecords()">
+                <i class="fa-solid fa-rotate"></i> Refresh
             </button>
-        </form>
-    </div>
-</div>
+        </div>
+
+        <div class="card" style="padding: 0; overflow: hidden;">
+            <div class="table-container">
+                <table id="recordsTable">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Customer</th>
+                        <th>Product</th>
+                        <th>Expiry</th>
+                        <th>Users</th>
+                        <th>Features</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                    <tr>
+                        <td colspan="7" style="text-align: center; color: var(--text-light);">Loading data...</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+</main>
 
 <div id="toast" class="toast"></div>
 
 <script>
-    // 1. Initialize Dates
+    // --- 1. Tab Switching Logic ---
+    function switchTab(tabName) {
+        // Update Sidebar
+        document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+        if(tabName === 'create') document.querySelectorAll('.nav-link')[0].classList.add('active');
+        else document.querySelectorAll('.nav-link')[1].classList.add('active');
+
+        // Update View
+        document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
+
+        if (tabName === 'create') {
+            document.getElementById('create-section').classList.add('active');
+        } else {
+            document.getElementById('records-section').classList.add('active');
+            fetchRecords(); // Auto-fetch when tab is clicked
+        }
+    }
+
+    // --- 2. Form Logic ---
     document.getElementById('issueDate').valueAsDate = new Date();
     const nextYear = new Date();
     nextYear.setFullYear(nextYear.getFullYear() + 1);
     document.getElementById('expiryDate').valueAsDate = nextYear;
 
-
-
-    // 2. Helper function for Toast Notifications
-    function showToast(message, type = 'success') {
+    function showToast(msg, type='success') {
         const x = document.getElementById("toast");
         x.className = "toast show " + type;
-        x.innerText = message;
-        // Icon prefix
-        if(type === 'success') x.innerHTML = '<i class="fa-solid fa-check-circle"></i> ' + message;
-        else x.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> ' + message;
-
-        setTimeout(function(){
-            x.className = x.className.replace("show", "");
-        }, 3000);
+        x.innerHTML = type === 'success' ? `<i class="fa-solid fa-check"></i> ${msg}` : `<i class="fa-solid fa-triangle-exclamation"></i> ${msg}`;
+        setTimeout(() => x.className = x.className.replace("show", ""), 3000);
     }
 
-    // 3. Form Submission Logic
+    const AUTH_HEADER = 'Basic ' + btoa("admin:velox@123");
+
     document.getElementById('licenseForm').addEventListener('submit', async function(e) {
         e.preventDefault();
-
         const btn = document.getElementById('submitBtn');
         const spinner = document.getElementById('btnSpinner');
         const btnText = document.getElementById('btnText');
 
-        // UI Loading State
-        btn.disabled = true;
-        spinner.style.display = "block";
-        btnText.innerText = "Processing...";
-
-        const Url = "http://localhost:8080/api/license/generate";
-        const username = "admin";
-        const password = "velox@123";
+        btn.disabled = true; spinner.style.display = "block"; btnText.innerText = "Processing...";
 
         const formData = {
             customerName: document.getElementById('customerName').value,
@@ -500,41 +485,89 @@
         };
 
         try {
-            const response = await fetch(Url, {
+            const response = await fetch("http://localhost:8080/api/license/generate", {
                 method: 'POST',
-                headers: {
-                    'Authorization': 'Basic ' + btoa(username + ":" + password),
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Authorization': AUTH_HEADER, 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
             });
 
-            if (!response.ok) {
-                throw new Error("Server rejected request");
-            }
+            if (!response.ok) throw new Error("Failed");
 
             const blob = await response.blob();
-            const downloadUrl = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = downloadUrl;
-            link.download = "license.lic";
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            window.URL.revokeObjectURL(downloadUrl);
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = "license.lic";
+            document.body.appendChild(a); a.click(); a.remove();
 
-            showToast("License generated & downloaded!", "success");
-
+            showToast("License generated & downloaded!");
         } catch (error) {
-            console.error('Error:', error);
-            showToast("Failed to generate license. Is the server running?", "error");
+            console.error(error);
+            showToast("Error generating license", "error");
         } finally {
-            // Reset UI
-            btn.disabled = false;
-            spinner.style.display = "none";
-            btnText.innerText = "Generate License File";
+            btn.disabled = false; spinner.style.display = "none"; btnText.innerText = "Generate License";
         }
     });
+
+    // --- 3. Table Data Fetching ---
+    async function fetchRecords() {
+        const tbody = document.getElementById('tableBody');
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 2rem;"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</td></tr>';
+
+        try {
+            const response = await fetch("http://localhost:8080/api/license/records", {
+                method: 'GET',
+                headers: { 'Authorization': AUTH_HEADER }
+            });
+
+            if(!response.ok) throw new Error("API Error");
+
+            const data = await response.json();
+            renderTable(data);
+
+        } catch (error) {
+            console.error(error);
+            tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--danger);">Failed to load records. Check console/server.</td></tr>`;
+        }
+    }
+
+    function renderTable(data) {
+        const tbody = document.getElementById('tableBody');
+        tbody.innerHTML = '';
+
+        if(data.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">No records found.</td></tr>';
+            return;
+        }
+
+        data.forEach(item => {
+            // Status Logic
+            let statusBadge = item.revoked
+                ? `<span class="badge badge-danger"><i class="fa-solid fa-ban"></i> Revoked</span>`
+                : `<span class="badge badge-success"><i class="fa-solid fa-check"></i> Active</span>`;
+
+            // Iris Logic
+            let irisBadge = item.irisEnabled
+                ? `<span class="badge badge-info" title="Iris Enabled"><i class="fa-regular fa-eye"></i> Iris</span>`
+                : `<span class="badge badge-neutral" title="Iris Disabled"><i class="fa-regular fa-eye-slash"></i> No Iris</span>`;
+
+            const row = `
+                <tr>
+                    <td style="color: var(--text-light);">#${item.id}</td>
+                    <td style="font-weight: 500;">${item.customerName}</td>
+                    <td>
+                        <div style="font-weight: 500;">${item.productName}</div>
+                        <div style="font-size: 0.8rem; color: var(--text-light);">${item.licenseName}</div>
+                    </td>
+                    <td>${item.expiryDate}</td>
+                    <td><i class="fa-solid fa-user-group" style="color: var(--text-light); margin-right: 5px;"></i> ${item.maxUsers}</td>
+                    <td>${irisBadge}</td>
+                    <td>${statusBadge}</td>
+                </tr>
+            `;
+            tbody.innerHTML += row;
+        });
+    }
 </script>
+
 </body>
 </html>

@@ -51,4 +51,14 @@ public class LicenseService {
         List<License> allLicenses = repo.findAll();
         return allLicenses;
     }
+
+    public void removeAllLicenses() {
+        repo.deleteAll();
+    }
+
+    public void removeLicenseById(Long id) {
+        if (repo.existsById(id)) {
+            repo.deleteById(id);
+        }
+    }
 }

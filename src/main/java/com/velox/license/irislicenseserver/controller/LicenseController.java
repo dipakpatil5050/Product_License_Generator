@@ -33,5 +33,16 @@ public class LicenseController {
     }
 
 
+    @DeleteMapping("/removeAll")
+    public ResponseEntity<String> removeAllLicenseRecords() throws Exception{
+        licenseService.removeAllLicenses();
+        return ResponseEntity.ok("All Licenses Deleted Successfully!!!");
+    }
+
+    @DeleteMapping("/remove/{id}")
+    public ResponseEntity<String> removeLicenseById(@PathVariable(name = "id") Long id) throws Exception{
+        licenseService.removeLicenseById(id);
+        return ResponseEntity.ok("License Deleted Successfully");
+    }
 
 }
