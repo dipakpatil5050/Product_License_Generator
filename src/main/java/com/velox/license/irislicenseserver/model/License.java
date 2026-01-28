@@ -23,13 +23,13 @@ public class License {
 
     private LocalDate issueDate;
     private LocalDate expiryDate;
+    private int maxUsers;
 
-    private int  maxUsers;
-    private boolean irisEnabled;
-
-    private boolean revoked;
-
-
-
-
+    @Transient
+    public String getStatus() {
+        if (expiryDate != null && LocalDate.now().isAfter(expiryDate)) {
+            return "EXPIRED";
+        }
+        return "ACTIVE";
+    }
 }

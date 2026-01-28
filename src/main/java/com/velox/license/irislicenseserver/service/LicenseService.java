@@ -33,7 +33,6 @@ public class LicenseService {
         payload.setIssueDate(entity.getIssueDate());
         payload.setExpiryDate(entity.getExpiryDate());
         payload.setMaxUsers(entity.getMaxUsers());
-        payload.setIrisEnabled(entity.isIrisEnabled());
 
         byte[] payloadBytes = mapper.writeValueAsBytes(payload);
         byte[] signature = signer.sign(payloadBytes);
@@ -48,8 +47,7 @@ public class LicenseService {
     }
 
     public List<License> getAllLicenseRecords() {
-        List<License> allLicenses = repo.findAll();
-        return allLicenses;
+        return repo.findAll();
     }
 
     public void removeAllLicenses() {

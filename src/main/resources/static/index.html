@@ -342,7 +342,7 @@
                         <label>Hardware ID</label>
                         <div class="input-wrapper">
                             <i class="fa-solid fa-fingerprint"></i>
-                            <input type="text" id="hwId" class="form-control" placeholder="d7fdd8be..." style="font-family: monospace;">
+                            <input type="text" id="hwId" class="form-control" placeholder="d7fdd8be..." style="font-family: monospace;" required>
                         </div>
                     </div>
                     <div class="input-group">
@@ -364,23 +364,6 @@
                         <div class="input-wrapper">
                             <i class="fa-solid fa-users"></i>
                             <input type="number" id="maxUsers" class="form-control" value="10" min="1">
-                        </div>
-                    </div>
-
-                    <div class="col-full toggle-container">
-                        <div class="toggle-item">
-                            <label class="switch">
-                                <input type="checkbox" id="irisEnabled" checked>
-                                <span class="slider"></span>
-                            </label>
-                            <span>Iris Enabled</span>
-                        </div>
-                        <div class="toggle-item">
-                            <label class="switch">
-                                <input type="checkbox" id="revoked">
-                                <span class="slider"></span>
-                            </label>
-                            <span>Revoked</span>
                         </div>
                     </div>
                 </div>
@@ -409,9 +392,9 @@
                         <th>ID</th>
                         <th>Customer</th>
                         <th>Product</th>
+                        <th>Issued</th>
                         <th>Expiry</th>
                         <th>Users</th>
-                        <th>Features</th>
                         <th>Status</th>
                     </tr>
                     </thead>
@@ -478,12 +461,10 @@
             description: document.getElementById('description').value,
             expiryDate: document.getElementById('expiryDate').value,
             hwId: document.getElementById('hwId').value,
-            irisEnabled: document.getElementById('irisEnabled').checked,
             issueDate: document.getElementById('issueDate').value,
             licenseName: document.getElementById('licenseName').value,
             maxUsers: parseInt(document.getElementById('maxUsers').value),
             productName: document.getElementById('productName').value,
-            revoked: document.getElementById('revoked').checked
         };
 
         try {
@@ -542,14 +523,14 @@
 
         data.forEach(item => {
             // Status Logic
-            let statusBadge = item.revoked
-                ? `<span class="badge badge-danger"><i class="fa-solid fa-ban"></i> Revoked</span>`
-                : `<span class="badge badge-success"><i class="fa-solid fa-check"></i> Active</span>`;
+            let statusBadge = item.status === "ACTIVE"
+                ? `<span class="badge badge-success"><i class="fa-solid fa-check"></i> Active</span>`
+                : `<span class="badge badge-danger"><i class="fa-solid fa-ban"></i> Expired</span>`;
 
-            // Iris Logic
-            let irisBadge = item.irisEnabled
-                ? `<span class="badge badge-info" title="Iris Enabled"><i class="fa-regular fa-eye"></i> Iris</span>`
-                : `<span class="badge badge-neutral" title="Iris Disabled"><i class="fa-regular fa-eye-slash"></i> No Iris</span>`;
+            // // Iris Logic
+            // let irisBadge = item.irisEnabled
+            //     ? `<span class="badge badge-info" title="Iris Enabled"><i class="fa-regular fa-eye"></i> Iris</span>`
+            //     : `<span class="badge badge-neutral" title="Iris Disabled"><i class="fa-regular fa-eye-slash"></i> No Iris</span>`;
 
             const row = `
                 <tr>
@@ -559,9 +540,9 @@
                         <div style="font-weight: 500;">${item.productName}</div>
                         <div style="font-size: 0.8rem; color: var(--text-light);">${item.licenseName}</div>
                     </td>
+                    <td>${item.issueDate}</td>
                     <td>${item.expiryDate}</td>
                     <td><i class="fa-solid fa-user-group" style="color: var(--text-light); margin-right: 5px;"></i> ${item.maxUsers}</td>
-                    <td>${irisBadge}</td>
                     <td>${statusBadge}</td>
                 </tr>
             `;

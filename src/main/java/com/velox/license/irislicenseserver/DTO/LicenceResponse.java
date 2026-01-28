@@ -12,8 +12,8 @@ public class LicenceResponse {
 
     private LocalDate issueDate;
     private LocalDate expiryDate;
+    private String status;
 
     private int  maxUsers;
-    private boolean irisEnabled;
 }
 
